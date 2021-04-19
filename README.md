@@ -162,17 +162,11 @@ Note: You can access your Windows files under `/mnt/c/`
 
 - Download [the lastest release of Android Universal Debloater](https://gitlab.com/W1nst0n/universal-android-debloater/-/releases).
 - Browse through the debloat lists to be sure the default selection suits you.
-- Run `debloat_script.sh` from a Unix terminal.
+- Run `detox.sh` from a Unix terminal.
 ```bash
-$ bash debloat_script.sh
+$ bash detox.sh
 ```
 
 **NOTE:** Chinese phones users may need to use the AOSP list for removing some stock apps because those chinese manufacturers (especially Xiaomi and Huawei) have been using the name of AOSP packages for their own (modified & closed-source) apps.
 
 **IMPORTANT NOTE:** You will have to run this script whenever your OEM push an update to your phone as some *uninstalled* system apps could be reinstalled.
-
-## How to contribute
-
-Hey-hey-hey! Don't go away so fast! This is a community project. That means I need you! I'm sure you want to make this project better anyway.
-
-==> [How to contribute](https://gitlab.com/W1nst0n/universal-android-debloater/-/wikis/home#how-to-contribute)
