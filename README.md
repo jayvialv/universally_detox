@@ -1,172 +1,179 @@
-# Universal Android Debloater
+# Universal Android Debloater GUI
 
-**DISCLAIMER**: Use this script at your own risk. I am not responsible for anything that could happen to your phone. 
+**DISCLAIMER**: Use at your own risk. I am not responsible for anything that
+could happen to your phone.
+
+<img src="/resources/screenshots/v0.5.0.png" width="850" alt="uad_screenshot">
+
+**This software is still in an early stage of development. Check out the issues, and feel free to contribute!**
 
 ## Summary
-I try to maintain a universal tool which removes bloatwares on any Android phones by using ADB.
 
-The main goal is to improve battery performance and privacy by removing unnecessary and obscure system apps. This can also contribute to improve security by reducing [the attack surface](https://en.wikipedia.org/wiki/Attack_surface). The script has a menu that lets you choose what debloat list you want to use. I strongly encourage you to take a look at the lists because the default selection may not suit you. All packages are as well documented as possible in order to provide a better understanding of what you can delete or not.
+This is a complete rewrite in Rust of the [UAD project](https://gitlab.com/W1nst0n/universal-android-debloater),
+which aims to improve privacy and battery performance by removing unnecessary
+and obscure system apps.
+This can also contribute to improve security by reducing [the attack surface](https://en.wikipedia.org/wiki/Attack_surface).
 
-This script *should* be safe with the default selection. The worse thing which could happen is preventing an essential system process to be loaded during boot causing then an unfortunate bootloop. If you used the non-root solution, after about 5 failed system boots, the phone will automatically reboot in recovery mode and you'll have to perform a FACTORY RESET. So make a backup!
+Packages are as well documented as possible in order to provide a better
+understanding of what you can delete or not. The worst issue that could happen
+is removing an essential system package needed during boot causing then an unfortunate
+bootloop. After about 5 failed system boots, the phone will automatically reboot
+in recovery mode, and you'll have to perform a FACTORY RESET. Make a backup first!
 
-If you have a rooted device you can also physically delete the apks. Ironically this solution is safer because the script saves the apks before their removal. In case of bootloop you just need to run the script from a recovery with ADB support (e.g TWRP) and restore them.
+In any case, you **CANNOT** brick your device with this software!
+That's the main point, right?
 
-In any case, you can NOT brick your device with this script! That's the main thing, right?
+## Features
 
-## Features 
-* [X] Quick search among all the packages of an android device
-* [X] Uninstallation of system/user packages (manually or with the debloat lists)
-* [X] Reinstallation of system packages (manually or with the debloat lists)
-* [X] ADB backup/restore (not really reliable, see the [FAQ](https://gitlab.com/W1nst0n/universal-android-debloater/-/wikis/FAQ))
-* [X] Device brand detection and auto-selection of the appropriate manufacturer debloat list
-* [X] Logging:`debloated_packages.txt`, `remaining_packages.txt`, `deleted_apks.txt` (for root users)
-* [X] Root support
-* [ ] Installation of alternative open-source apps replacing stock apps (list in the WIKI section) (WIP)
+- [x] Uninstall/Disable and Restore/Enable system packages
+- [x] Multi-user support (e.g. apps in work profiles)
+- [x] Export/Import your selection in `uad_exported_selection.txt`
+- [x] Multi-device support: you can connect multiple phones at the same time
+- [x] All your actions are logged, so you never forget what you've done
 
-NB : The non-root method is NOT a real uninstallation for system apps (see the [FAQ](https://gitlab.com/W1nst0n/universal-android-debloater/-/wikis/FAQ))
+NB : System apps cannot truly be uninstalled without root (see the [FAQ](https://github.com/0x192/universal-android-debloater/wiki/FAQ))
 
-## Universal debloat lists 
-* [X] GFAM (Google/Facebook/Amazon/Microsoft)
-* [X] AOSP
-* [X] Manufacturers (OEM)
-* [X] Mobile carriers
-* [X] Qualcomm / Mediatek / Miscellaneous
+## Universal Debloat Lists
+
+- [x] GFAM (Google/Facebook/Amazon/Microsoft)
+- [x] AOSP
+- [x] Manufacturers (OEM)
+- [x] Mobile carriers
+- [x] Qualcomm / Mediatek / Miscellaneous
 
 ## Manufacturers debloat lists
-* [ ] Archos
-* [X] Asus
-* [ ] Blackberry
-* [ ] Gionee
-* [X] LG
-* [X] Google
-* [ ] HTC
-* [X] Huawei
-* [X] Motorola
-* [X] Nokia
-* [X] OnePlus
-* [X] Oppo  
-* [X] Samsung
-* [X] Sony
-* [ ] TCL
-* [ ] Wiko
-* [X] Xiaomi
-* [ ] ZTE
+
+- [ ] Archos
+- [x] Asus
+- [ ] Blackberry
+- [ ] Gionee
+- [x] LG
+- [x] Google
+- [ ] iQOO
+- [x] Fairphone
+- [ ] HTC
+- [x] Huawei
+- [x] Motorola
+- [x] Nokia
+- [x] OnePlus
+- [x] Oppo
+- [x] Realme
+- [x] Samsung
+- [x] Sony
+- [x] Tecno
+- [ ] TCL
+- [x] Unihertz
+- [x] Vivo/iQOO
+- [ ] Wiko
+- [x] Xiaomi
+- [x] ZTE
 
 ## Mobile carriers debloat lists
-|   Country       | Carriers                          |
-|-----------------|-----------------------------------|
-| France          | Orange, SFR, Free, Bouyges/Sosh   |
-| USA             | T-Mobile, Verizon, Sprint, AT&T   |  
-| Germany         | Telekom                           |
 
+| Country | Carriers                        |
+| ------- | ------------------------------- |
+| France  | Orange, SFR, Free, Bouygues     |
+| USA     | T-Mobile, Verizon, Sprint, AT&T |
+| Germany | Telekom                         |
+| UK      | EE                              |
 
-## How to use it 
-- **Read the [FAQ](https://gitlab.com/W1nst0n/universal-android-debloater/-/wikis/FAQ)!**
+## How to use it
+
+- **Read the [FAQ](https://github.com/0x192/universal-android-debloater/wiki/FAQ)!**
 - **Do a proper backup of your data! You can never be too careful!**
-- Enable *Developer Options* on your smartphone.
-- Turn on *USB Debugging* from the developper panel.
-- From the settings, disconnect from any OEM accounts (when you delete OEM account package it could lock you on the lockscreen because the phone can't associate your identity anymore)
-<p>
-<details>
-<summary>LINUX</summary>
+- Enable _Developer Options_ on your smartphone.
+- Turn on _USB Debugging_ from the developer panel.
+- From the settings, disconnect from any OEM accounts (when you delete an OEM
+  account package it could lock you on the lockscreen because the phone can't
+  associate your identity anymore)
+- Install ADB (see the intructions by clicking on your OS below):
+  <p>
+  <details>
+  <summary>LINUX</summary>
 
-- Install *Android platform tools* and *qpdf* on your PC :
+  - Install _Android platform tools_ on your PC :
 
-Debian Base:
-```bash
-$ sudo apt install android-sdk-platform-tools qpdf zip
-```
-Arch-Linux Base:
-```bash
-$ sudo pacman -S android-tools qpdf zip
-```
-Red Hat Base:
-```bash
-$ sudo yum install android-tools qpdf zip
-```
-</details>
-</p>
+  Debian Base:
 
-<p>
-<details>
-<summary>MAC OS</summary>
+  ```bash
+  sudo apt install android-sdk-platform-tools
+  ```
 
-- Install [Homebrew](https://brew.sh/)
-- Install *Android platform tools* and *qpdf*
+  Arch-Linux Base:
 
-You will also need to upgrade bash because Apple ships a very old bash version (3.2.57) due to licencing issues.
+  ```bash
+  sudo pacman -S android-tools
+  ```
 
-```bash
-$ brew install android-platform-tools qpdf bash
-```
-</details>
-</p>
+  Red Hat Base:
 
-<p>
-<details>
-<summary>WINDOWS</summary>
+  ```bash
+  sudo yum install android-tools
+  ```
 
-Windows can't natively run bash script. Choose a workaround:
+  OpenSUSE Base:
 
-## Method 1: Live Linux USB
-Create a Linux Live USB. Boot your computer on it and follow the instructions of the `LINUX` section. If you are a new to Linux, this will be a good opportunity to discover this wonderful OS. I recommend Linux Mint: [Instructions](https://itsfoss.com/install-linux-mint/)
+  ```bash
+  sudo zypper install android-tools
+  ```
 
-**Note:** Just in case, I recall that you don't need to install Linux on your computer. You can do whatever your want direclty on the Live USB.
+  </details>
+  </p>
 
-## Method 2: WSL (W10 only)
-This method consists of installing WSL, a compatibility layer for running Linux binary executables natively on Windows 10.
+  <p>
+  <details>
+  <summary>MAC OS</summary>
 
-For now, there is no USB support in the WSL. This means you need to install both Windows and Linux platform-tools and force the use of Windows adb server.
+  - Install [Homebrew](https://brew.sh/)
+  - Install _Android platform tools_
 
-- Download [android platform tools](https://dl.google.com/android/repository/platform-tools-latest-windows.zip) and unzip it somewhere. [Add the folder to your PATH](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
-- [Install USB drivers of your device](https://developer.android.com/studio/run/oem-usb#Drivers)
-- Check your device is detected:
-```batch
-> adb devices
-```
+    ```bash
+    brew install android-platform-tools
+    ```
 
-- Install [WSL2 (Windows Subsystem for Linux)](https://itsfoss.com/install-bash-on-windows/) in order to be able to run bash scripts.
-- Install *Android platform tools* and *qpdf* from the Debian/Ubuntu shell
-```bash
-$ sudo apt update && sudo apt upgrade
-$ sudo apt install android-sdk-platform-tools qpdf zip
-```
-- Check the version of ADB on Linux & Windows
-```bash
-adb version
-```
-You need the same version otherwise it will not work. It's very likely your Ubuntu/Debian ADB version is older than the Windows one. 
-Download the lastest linux platform tools from Google and replace your adb binaries with the new ones :
-```bash
-$ wget https://dl.google.com/android/repository/platform-tools-latest-linux.zip
-$ unzip platform-tools-latest-linux.zip
-$ sudo cp platform-tools/adb /usr/bin/adb
-$ sudo chmod 755 /usr/bin/adb
-$ adb version
-```
-Kill the WSL adb server:
-```bash
-$ adb kill-server
-```
-And start the ADB server on Windows: 
-```batch
-> adb kill-server
-> adb start-server
-> adb devices
-```
-Note: You can access your Windows files under `/mnt/c/`
+    </details>
+    </p>
 
-</details>
-</p>
+  <p>
+  <details>
+  <summary>WINDOWS</summary>
 
+  - Download [android platform tools](https://dl.google.com/android/repository/platform-tools-latest-windows.zip)
+    and unzip it somewhere.
+  - [Add the android platform tools to your PATH](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
+    **OR** make sure to launch UAD from the same directory.
 
-- Download [the lastest release of Android Universal Debloater](https://gitlab.com/W1nst0n/universal-android-debloater/-/releases).
-- Browse through the debloat lists to be sure the default selection suits you.
-- Run `detox.sh` from a Unix terminal.
-```bash
-$ bash detox.sh
-```
+  - [Install USB drivers for your device](https://developer.android.com/studio/run/oem-usb#Drivers)
+  - Check your device is detected:
 
-**NOTE:** Chinese phones users may need to use the AOSP list for removing some stock apps because those chinese manufacturers (especially Xiaomi and Huawei) have been using the name of AOSP packages for their own (modified & closed-source) apps.
+    ```bash
+     adb devices
+    ```
 
-**IMPORTANT NOTE:** You will have to run this script whenever your OEM push an update to your phone as some *uninstalled* system apps could be reinstalled.
+    </details>
+    </p>
+
+- Download the latest release of UAD GUI for your Operating System [here](https://github.com/0x192/universal-android-debloater/releases).
+  Take the `opengl` version only if the default version (with a Vulkan backend)
+  doesn't launch.
+
+**NOTE:** Chinese phones users may need to use the AOSP list for removing some stock
+apps because those Chinese manufacturers (especially Xiaomi and Huawei) have been
+using the name of AOSP packages for their own (modified & closed-source) apps.
+
+**IMPORTANT NOTE:** You will have to run this software whenever your OEM pushes
+an update to your phone as some _uninstalled_ system apps could be reinstalled.
+
+## How to contribute
+
+Hey-hey-hey! Don't go away so fast! This is a community project.
+That means I need you! I'm sure you want to make this project better anyway.
+
+==> [How to contribute](https://github.com/0x192/universal-android-debloater/wiki)
+
+## Special thanks
+
+- [@mawilms](https://github.com/mawilms) for his LotRO plugin manager ([Lembas](https://github.com/mawilms/lembas))
+  which helped me a lot to understand how to use the [Iced](https://github.com/hecrj/iced)
+  GUI library.
+- [@casperstorm](https://github.com/casperstorm) for the UI/UX inspiration.

@@ -1,572 +1,172 @@
-# New Version (v2.9.1)
+# Changelog
 
-## New packages added
-- **AOSP** : 1
-- **Asus** : 2
-- **Google** : 1
-- **Carriers** : 3 (AT&T)
-- **OnePlus**: 1
-- **Pending**: 24
-- **Samsung** : 9
-- **Xiaomi** : 1
-
-## Bugfixes
-- Bash version check not working as expected (#60)
-- Debloating/restoring not working if the script was run from the recovery
-- Package name typo (!3) (thanks @maximilian.overmeyer!)
-- "pm: command not found" when disabling packages (Android 7 [Nougat] and below) (#78)
+All notable changes to this project will be documented in this file.
 
-## Miscellaneous
-- Documentation improvement/update for many apps.
-- UI/UX improvement for the recovery version of the script
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+The sections should follow the order `Apps`, `Added`, `Changed`, `Fixed`, `Packaging`
+and `Removed`.
 
-# New Version (v2.9)
+## [0.6] - Unreleased
 
-**Note:** The `debloat_script.sh` is now in maintenance mode and won't receive any more features. The focus is on the developement of a GUI.
+**WARNING: Settings specification has changed. Previous user settings will be erased**.
 
-### Magisk module and root support for Android 10+
-Root users can now systemlessly debloat their device. The script will create a flashable Magisk zip you'll need to flash from **TWRP** or **Magisk Manager** (recommended). Once installed the module will, on boot, replace the APKs folders with an empty folder (only containing a `.replace` file). 
+### Added
+- [[#374](https://github.com/0x192/universal-android-debloater/pull/374)] **Device-specific persistent configuration:** Some settings are now device-specific which means you can maintain different settings across several devices.
 
-Systemless debloat is the only solution for Android 10+ users because *system* can't be mounted in read-write anymore.
+- [[#447](https://github.com/0x192/universal-android-debloater/pull/447)] **Backup/Restore the state of a device:** Quick and easy way to save the state of all the system apps on a device and restore it.
 
-## New packages added
-- **Samsung** : 5 (thanks @j0taz)
+- [[#450](https://github.com/0x192/universal-android-debloater/pull/450)] **Warn the user when a work profile is detected:** Displays a warning message when switching to a work profile user and displays unavailable work profile users in the settings.
 
-## Bugfixes
-- **Debloated packages (non root) reappear after a reboot (#48)**
-- Bad apks names when using root features (parsing issue)
-- Connection preferences settings won't open (AOSP list, Pixel 4a / Android 11) (#49)
-- Impossible to use a non-root feature after having used a root feature
+### Changed
+- [[#374](https://github.com/0x192/universal-android-debloater/pull/374)] ALL settings are now persistent.
 
-# Miscellaneous
-- App data is now cleared (`pm clear $package`) before root debloat
+### Fixed
+- [[#448](https://github.com/0x192/universal-android-debloater/pull/448)] UAD crash when interacting with work profiles on recent phones.
 
-# Hotfix (v2.8.4)
+### Removed
+- The `Export current selection` button and the unintuitive auto import selection (see https://github.com/0x192/universal-android-debloater/issues/192) have been replaced by the new backup/restore system.
 
-- Error when remounting `/system` as read-only after a restore/debloat action (#46)
-- Package search feature now displays APK path along with the package name
-- The APK was not backed-up when you use the manual root debloat feature (`1 - debloat a package`)
-- `deleted_apks.txt` not found
-- Mounting error on Android 9+ (only fixed for Android 9)
+## [0.5.1] - 2022-07-03
 
-# IMPORTANT NOTE
-**Root features do currently not work for Android 10+**. Android 10 has introduced a new dynamic partitioning system
-which, in short, prevent to easily mount system filesystem in read-write (use of EXT4 dedup filesystem, which is not writable). 
-Fortunately, the awesome @topjohnwu (developer of Magisk) found a solution. I'll try to update my script to use the Magisk magic.
+Since `0.5.0`, all changes related to apps are available to users without downloading a new version of UAD as the software directly download the json debloat list from Github. These changes can be tracked in commits with `[Pkg]` in their name. [See the commits](https://github.com/0x192/universal-android-debloater/commits/main)
 
-# Hotfix (v2.8.3)
+### Added
+- [[#209](https://github.com/0x192/universal-android-debloater/issues/209)] Persistent highlighting when you click on a package
 
-- Fix a bug (bad variable name) which basically broke all the non root debloat/restore features.
+### Changed
+- `neededBy` and `dependencies` field can now list multiple packages (feature not visible in the UI yet)
 
-# Hotfix (v2.8.2)
-
-- Flashable debloat zip not removing anything (oversight on my part after debugging for the first hotfix)
+### Fixed
+- [[#286](https://github.com/0x192/universal-android-debloater/issues/286)] UAD stuck on "Downloading UAD lists. Please wait" screen
 
-# Hotfix (v2.8.1)
+## Packaging
+- [[#256](https://github.com/0x192/universal-android-debloater/issues/256)] Fixed typo in the release name of the noseflupdate variation
+- Bump dependencies
 
-- Flashable zip was broken. I reworked all the generation logic. It is much simpler and correctly works now.
-- The script will now force a backup of the apks before generating a flashable zip.
+## [0.5.0] - 2022-04-03
 
-# New Version (v2.8)
+### Apps
 
-Happy new year! :star2:
+- [[#115](https://github.com/0x192/universal-android-debloater/issues/115)] Added `com.tblenovo.lenovotips` to the recommended list.
+- [[#120](https://github.com/0x192/universal-android-debloater/pull/120)] Move Google keyboard to `Advanced` list (Default keyboards should not be in the `Recommended` list)
+- [[#169](https://github.com/0x192/universal-android-debloater/issues/154) Move `com.android.htmlviewer` to the `Expert` list. Removing it bootloop the device on MIUI 12.5.4+.
 
-## Notable changes
-- Apps are now removed for all users (not only `user 0`) (see #29)
-- `debloated_packages.txt` logfile will no longer have duplicates.
-- New list added: `Mediatek` a chipset manufacturer (like Qualcomm) mostly providing chinese phones.
-- Documentation improvement/update for many apps.
-- General improvement of UI/UX and better error handling.
+Huge thanks to [@KarlRamstedt](https://github.com/KarlRamstedt) for their help in this major debloat list update:
+- [[#122](https://github.com/0x192/universal-android-debloater/pull/122)] Added a bunch of new packages
+- [[#122](https://github.com/0x192/universal-android-debloater/pull/122)] A lot of description updates and fixes
+- [[#122](https://github.com/0x192/universal-android-debloater/pull/122) | [#138](https://github.com/0x192/universal-android-debloater/pull/138)] Big revision of the recommendations according to more consistent criteria ([see the wiki](https://github.com/0x192/universal-android-debloater/wiki/FAQ#how-are-the-recommendations-chosen))
 
-### Root Support
-If your device is rooted you can now use this script to physically remove apks. Ironically this method is actually safer because you can restore the apks from TWRP recovery in case of a bootloop.
-- Root debloat: use the lists but remove the apks (`rm -rf`) instead of using the package manager (`pm`). All apks are automatically backed-up in `apks_backup` before being deleted.
-- APKs restore: you can use the script, even when in TWRP recovery, to restore your apks
-- Flashable zip: Generate a flashable zip
+### Added
+- [[#68](https://github.com/0x192/universal-android-debloater/issue/68)] **Unselect all button**: Let's you unselect all the packages you see on screen (i.e in the current filtered list).
+- [[#119](https://github.com/0x192/universal-android-debloater/issue/119)] **Reboot button**: Let's you quickly reboot the currently selected device.
+- [[#110](https://github.com/0x192/universal-android-debloater/pull/110)] **Remote `uad_lists.json` download**: The debloat list is now directly fetched from the main branch of this repo when you launch UAD. This means there is no longer the need to release a new version of UAD for updating the debloat lists! :rocket:
+- [[#121](https://github.com/0x192/universal-android-debloater/pull/121)] :arrows_counterclockwise: **UAD self-update**: UAD will now check at launch if there is a new version of itself and enable you to perform the update directly from the app! :rocket:
 
-## New packages added
-- **AOSP** : 0
-- **Google** : 0
-- **Huawei** : 25
-- **Miscellaneous** : 0
-- **OnePlus**: 1
-- **Samsung** : 13
-- **Xiaomi** : 1
+### Changed
+- [[#165](https://github.com/0x192/universal-android-debloater/issues/165)] UAD now tries every 500ms (for 1min) to initiate an ADB connection until a device is found during the `FindingPhones` loading state.
+- All the init process was reworked and a status message is displayed at each stage (`DownloadingList`, `FindingPhones`,`LoadingPackages`,`UpdatingUad` `Ready`) so you know what is happening.
+- Minor UI changes
 
-## Pending --> Official lists
-- **Tcl** : 2
-- **AOSP** : 16
-- **Google** : 16
-- **Nokia** : 1
-- **Samsung** : 25
-- **Huawei** : 7
-- **Xiaomi** : 49
-- **Mediatek** : 13
-- **Miscellaneous** : 0
+### Packaging
+- Add a `no-self-update` build for MacOS and Linux. Useful if UAD is distributed into repositories. The update process will then be managed by a package manager.
+- MacOS builds are now also be released as a compressed tarball (like for Linux). You won't need to manually add the executable permission anymore. ([more info](https://github.com/actions/upload-artifact/issues/38))
+- Bump dependencies
 
-## Bugfixes
-- Renamed confusing variable name (OLDER_THAN_ANDROID_7_1) to OLDER_THAN_ANDROID_8.
-- Fixed broken bash version check
-- Bootloop with Google debloat list on Android 11 (and higher) (#43)
 
-# New Version (v2.7)
+## [0.4.1] - 2022-01-31
 
-Didn't you notice the last release never found packages to debloat/restore? Well... this works now. It seems all my changes wasn't pushed on the repo. 
+### Fixed
+- Selection counter never decreasing.
 
-Altough this release contains almost exclusively bugfixes, it's is not a hotfix as there's also a new feature.
+## [0.4] - 2022-01-30
 
-NB: I currently don't have a lot free time so the next *real* release will be in quite some time. 
+### Apps
+- [[#92](https://github.com/0x192/universal-android-debloater/pull/92)] Added 3 Fairphone packages + 7 Qualcomm packages (thanks [@VeH-c](https://github.com/VeH-c))
+- [[#87](https://github.com/0x192/universal-android-debloater/pull/87)] Added 2 Unihertz packages (thanks [@rar0ch](https://github.com/rar0ch))
+- [[#52](https://github.com/0x192/universal-android-debloater/issues/52)] Added `uk.co.ee.myee` to the debloat lists  (thanks [@lawson58](https://github.com/lawson85)).
+- [[#58](https://github.com/0x192/universal-android-debloater/issues/52)] Added `android` to the debloat lists with the tag `Unsafe`.
+- Added 2 new Xiaomi packages to the `Recommended` list.
+- Multiple package description improvement (thanks [@jonas-ott](https://github.com/jonas-ott) and [@felurx](https://github.com/felurx) for the help)
+- Review of the package lists recommendations. The `Recommended` debloat list is now safer (less likely to remove something you'd want to keep).
 
-## Notable changes
-- New menu entry (`7 - External list`) which enables you to use your own debloat list (#30)
+### Added
+- [[#49](https://github.com/0x192/universal-android-debloater/issues/49)] Multi-device support: You are now able to select a device among the list of all ADB connected devices/emulators.
+- [[#44](https://github.com/0x192/universal-android-debloater/issues/44)] Persistent settings: Settings (only `theme` for now) are saved to a config file. Its location follows [the standards of the different OS](https://github.com/dirs-dev/dirs-rs#example).
+- Links to the Github page, wiki, github issues and logfiles in the `About` page.
 
-## Bugfixes
-- Nothing to debloat message when there is stuff to debloat.
-- Compatibility issue with BSD version of `sed` MacOS which prevented the script to generate the debloat lists (#32)
-- Backup integrity check always failing (#31)
-- Script failed when `Packages search` feature didn't find any package 
+### Changed
+- [[#65](https://github.com/0x192/universal-android-debloater/issues/65)] ADB commands now run in parallel and asynchronously! This means no more UI freeze when performing long/many actions! :rocket:
+- UI now updates itself in real time when performing ADB actions (thanks to async & multithreading). Before, it waited for the end of all actions.
+- Logfiles are now located in a more conventional place: [cache_dir](https://docs.rs/dirs/latest/dirs/).
+- Previous logs are no longer overwritten. The logger now only appends to the current logfile of the day (UAD_%Y%m%d.log).
+- Each new day the logger will create a new file on UAD launch.
+- [[#78](https://github.com/0x192/universal-android-debloater/issues/78)] Disable mode is now only available on Android 6+ because the disable ADB commands do not work without root on older devices. The setting will be greyed-out for those devices.
+- Minor light theme update
 
-# New Release (v2.6)
 
-:fallen_leaf: :fallen_leaf: :fallen_leaf: :fallen_leaf: :fallen_leaf: :fallen_leaf:
+### Fixed
+- [[#50](https://github.com/0x192/universal-android-debloater/issues/50)] Resync button flipping theme back to `Lupin`.
+- [Regression ([048e7f](https://github.com/0x192/universal-android-debloater/commit/048e7fc8fd6d44b0e8ba933c289249366254a9cc))] Weird disabled/greyed action button with older devices (< Android 8.0). Package could be selected but no action was performed.
+- [[#78](https://github.com/0x192/universal-android-debloater/issues/78)] Packages not being actually uninstalled on older devices (< Android 6.0). Without root we can only use `pm block`/`pm unblock` for Android KitKit (4.4) and `pm hide`/`pm unhide` on Android Lollipop (5.x).
 
-## Notable changes
-- Improved script logic. The script now uses a custom list (`CUSTOM_LIST`) for processing which only contains packages preinstalled on your phone.
-- Added a new menu entry to quickly reboot the phone.
+### Packaging
+- For Arch-based users, UAD is now available in the AUR: `universal-android-debloater-bin` (binary) and `universal-android-debloater` (from source)
+- Bump dependencies
 
-## New packages added
-- **AOSP** : 26
-- **Google** : 2
-- **Miscellaneous** : 14
-- **Samsung** : 1
-- **Pending** : 153
-- **Xiaomi** : 16
 
-## Pending --> Official lists
-- **AOSP** : 3
-- **Google** : 2
-- **Samsung** : 50
-- **Sony** : 2
-- **Huawei** : 5
-- **Xiaomi** : 13
-- **Miscellaneous** : 12
+## [0.3] - 2021-10-10
 
-## Bugfixes
-- No sound/mic during phonecalls on some Motorola phones (#25)
+### Added
+- [[#16](https://github.com/0x192/universal-android-debloater/issues/16)] Multi-user support: You can now debloat/restore apps for any user of the phone (not only the primary user 0). 
+   - `Multi user mode` setting (default to `on` for Android 5+) allowing to remove packages for all users ([a work profile is another user](https://developer.android.com/work/managed-profiles)) instead of only the selected user.
+   - User switcher (picklist).
+- [[#11](https://github.com/0x192/universal-android-debloater/issues/11)] New themes: light, dark and lupin. Lupin theme is now the new default theme. Themes can be changed from the settings.
+- [[#40](https://github.com/0x192/universal-android-debloater/issues/40)] Description field scrollbar: you can now scroll long descriptions.
 
-## Miscellaneous
-- Packages list installed on your phone (`remaining_packages.txt`) is now generated as soon as you arrive on the main menu. This list is updated once any action is *completed* (and brings you back to the main menu)
-- Adjusted default selection for several lists.
-- Improvement and adjustment of many package's description.
-- The *[EXIT TRAP]* (used for debug) will no longer be triggered when you `ctrl^C`. 
+### Fixed
+- [Regression] Unsafe packages can be deleted without enabling `expert mode`.
+- The refresh button doesn't update settings when a (new) phone is connected.
+- [Regression] Restore buttons are disabled when connecting an Android 8.0 phone.
+- [[#17](https://github.com/0x192/universal-android-debloater/issues/17)] Refresh icon does not appear.
 
-# New Release (v2.5.1)
+## [0.2.2] - 2021-09-30
 
-- Fixed an inconsequential typing error
-- A more useful error message is now displayed when the phone is not detected by ADB (#18)
+### Fixed
+- Crash when connecting a LG device (#33)
 
+## [0.2.1] - 2021-09-28
 
-# New Release (v2.5)
+### Added
+- Software version in the navigation panel
 
-Big thanks to @plan10, @thekgg and @zxh30b for their nice contributions! :rocket:
+### Packaging
+- `wgpu` renderer is not the default renderer (you don't need to add `--features wgpu` if you want to build UAD with `wgpu`)
 
-## Notable changes
-- Big revamp and improvement of the LG list (@zxh30b) 
-- Big revamp and improvement of the Motorola list (@plan10)
-- Revamp of the Samsung list with a proper distinction between default selection and advanced debloat.
-- Commented out a motorola package causing a bootloop on a Moto G7 Power
-- Qualcomm has now its own list (in `Miscellaneous.sh`) that you can choose inside the `5 - Others` submenu.
+### Fixed
+- [[#35](https://github.com/0x192/universal-android-debloater/issues/35)] Exported selection not found
 
-## New packages added
-- **Carriers** : 2 (AT&T)
-- **LG** : 24
-- **Miscellaneous** : 7
-- **Morotola** : 10
-- **Samsung** : 9
-- **Pending** : 18
+## [0.2] - 2021-09-26
 
-## Pending --> Official lists
-- **Samsung** : 1
-- **Sony** : 2
-- **Huawei** : 6
+### Added
+- [[#2](https://github.com/0x192/universal-android-debloater/issues/2)] UAD now comes with a logger. Debug information will be written to a `uad.log` file (Warning level log in *stdout*)
+- [[#15](https://github.com/0x192/universal-android-debloater/issues/15)] Support for older phone (< Android 8.0):
+- Disable mode in settings: clear and disable packages instead of uninstalling them (default for old phones because you can't restore uninstalled packages)
+- [[#8](https://github.com/0x192/universal-android-debloater/issues/8)] Export your selection in the `uad_exported_selection.txt` file. Packages from this file (if found in the current directory) will be automatically selected upon the start of UAD (or after a refresh).
 
+### Changed
+- [[#25](https://github.com/0x192/universal-android-debloater/issues/25)] UAD will no longer crash at start if it doesn't find ADB but will display a useful error message
+- [[#3](https://github.com/0x192/universal-android-debloater/issues/3)] Better handling of ADB errors
+- Updated dependencies (compatibility with [Iced](https://github.com/iced-rs/iced) main branch latest commit)
+- Cleanup and refactoring of the code
+- Performance improvement
+- Various UI/UX improvement
+- The `Debloat/Restore selection` button has been split in 2 buttons: `removing` and `restoring`
 
-# Hotfix (v2.4.2)
+### Packaging
+- Added an alternative build that uses [OpenGL](https://fr.wikipedia.org/wiki/OpenGL) (instead of [Vulkan](https://fr.wikipedia.org/wiki/Vulkan_(API))) for compatibility with older computers. If you encouter some visual glitches with the default Vulkan build you should try the OpenGL build.
 
-- Fixed a potential bootloop on samsung phone (#20)
-- Improved `com.samsung.klmsagent` description according to #19
-
-# Hotfix (v2.4.1)
-
-- Fixed a mistake causing bootloop on some samsung devices (#16)
-
-# New Release (v2.4)
-
-Big thanks to @yawnoc, @gsurrel, @vasudev_gmk & @gafarma89 ! :+1:
-
-## New packages added
-- **AOSP** : 1
-- **Google** : 2
-- **Samsung** : 23
-- **Pending** : 102
-
-## Pending --> Official lists
-- **Samsung** : 12
-
-## Miscellaneous
-- Nokia list revamp (including documentation improvement and default selections change)
-- Documentation improvement of several packages
-- Support for Xiaomi devices with `ro.product.brand=redmi` instead of `xiaomi`
-
-## Bugfixes
-- Fixed a bug preventing the use of the `1 - debloat/restore a package` menu entry
-- Fixed a minor display bug occuring when restoring a package manually
-
-# Hotfix (v2.3.2)
-
-- Fixed LG list not being available for LG devices (#7)
-- Fixed AOSP list not being detected (#7)
-- AOSP list revamp (including documentation improvement and default selections change)
-
-# Hotfix (v2.3.1)
-
-- Changed the shebang to `#!/usr/bin/env bash` for better portability. MacOS users needs to use a newer bash version. (see #5)
-
-
-# New Release (v2.3)
-
-## Code improvement
-- Refactored much of the script for a cleaner code base. 
-- Improved maintainability & readability
-- Added an error trap
-
-## New manufacturers supported
-- **Oppo**: 15 new packages (+ 25 from the pending list)
-
-## New packages added
-- **AOSP** : 7
-- **Miscellaneous** : 4
-- **Google** : 3
-- **Sony** : 1
-
-## Pending --> Official lists
-- **Samsung** : 16
-- **Sony** : 5
-- **Oppo** : 26
-
-## Bugfixes
-- Force uninstall impossible in legacy mode.
-- Some old Kobo devices returned `\t` causing an issue when comparing SDK API version.
-- Legacy debloat was broken
-- Minor text bug
-
-## Miscellaneous
-- Default debloat packages selection adjusted (less breakage for "normal people")
-- Remaining packages list (`remaining_packages.txt`) now processed in background
-- Improved some packages description
-
-
-# Hotfix (v2.2.1)
-
-- 2 small nasty bugs fixed.
-- `remaining_packages.txt` now only logs system packages.
-
-# New Release (v2.2)
-
-## Bugfixes
-- Android version checking (fixed #2).
-- Fixed empty list bug when choosing "manufacturer debloat".
-- Pending list selection.
-- Misc bugs nobody saw because I'm the only user of this script ! :D
-
-## New manufacturers supported
-- **Zte**: 2 new packages. (yeah it's not great)
-
-## Pending --> Official lists
-- **Miscellaneous** : 47 new packages (including 3 new *Qualcomm* packages)
-- **Carriers** : 7 new packages (3 Sprint packages + 4 AT&T Packages)
-- **Samsung** : 1 new package 
-
-## Miscellaneous
-- Code improvements and cleaning.
-- Some minor UI/UX improvements.
-- Improved documentation for some packages.
-- Better error handling. Script should now exit with a useful error output if something went wrong.
-- You can now choose separately `Google`, `Facebook`, `Amazon` and `Microsoft` lists.
-
-
-# New Release (v2.1)
-
-## Alternative method for Android 8.0 and older
-Older Android versions can't reinstall uninstalled packages. The script now detects this case and proposes disabling the apps and clearing data instead of uninstalling them.
-Concretely, the script will use : `pm disable-user $package && am force-stop $package && pm clear $package`. Restore will use `pm enable $package`.
-
-## More packages added
-- **AOSP** : 3 new packages
-- **Miscellaneous** : 2 new packages
-- **Carriers** : 6 new packages (4 AT&T packages + 2 Sprint packages)
-- **Pending** : 26 new packages (Oppo packages)
-
-## Miscellaneous
-- Fixed a (dumb) bug that forced *uninstall* choice even if the user choosed *restore*.
-- Fixed a (dumb again) bug that prevented the backup integrity check function to find the backup. 
-- Improved the debloat/restore function to avoid checking redondant if statements.
-- Added a step for people who can't uninstall the Google Play services.
-- Minor spelling corrections.
-
-# New Release (v2.0)
-
-I worked hard for this release ! This is a big one ! Enjoy ! :rocket:
-
-## Major overhaul of the script
-- Improved UI/UX.
-- Performance improvement (you will not feel it but still local variables are used and packages arrays are passed by reference to avoid useless copy).
-- Miscellaneous code improvement.
-
-## New features
- - You can now select (restore/debloat) several lists at once 
- - Debloated packages are now listed in a file called `debloated_packages.txt`.
- - A list of all your packages (after debloat) is automatically exported in a file called `remaining_packages.txt`.
-
-## New manufacturers supported
-- **OnePlus**: 32 new packages.
-- **Motorola** : 60 new packages.
-
-## New mobiles carriers supported
-- `[FR]` **Orange/Sosh** : 13 new packages.
-- `[FR]` **Bouygues** : 3 new packages** (not much bloat it seems).
-- `[FR]` **SFR** : 5 new packages (not much bloat neither).
-- `[DE]` **Telekom**: 1 new package (idem).
-- `[US]` **Sprint** : 25 new packages.
-- `[US]` **AT&T** : 15 new packages.
-
-## Always more packages ! 
-- **AOSP** : 8 new packages.
-- **Google** : 5 new packages.
-- **Miscellaneous** : 30 new packages including 13 new *Qualcomm* packages.
-- **Carriers** : 14 new *Verizon* packages.
-- **Sony** : 2 new packages (commented-out by default).
-
-## Pending list
-New list added in the main menu (`-1 - Pending list`). Packages are located in `lists/0 - Pending.sh` file. 
-
-**List packages are undocumented. This mean I did no proper search yet so it's not impossible that some packages are unsafe to delete.**
-Currentlty this means that I either found them in debloat lists lying around on XDA forums or that I preselected them from a full packages list of a phone I had on hand.
-
-In the future, when some nice users will help me, packages will get off the pending list faster ! ;)
-
-## Miscellaneous
-- Commented out all the packages I put outside of the arrays (because you should never delete them) to remove (harmless) bash errors at the script startup.
-- Documentation and official support for the 26 new Samsung packages added in *v1.8*.
-- Improved the documentation for some packages.
-- Added some worth reading stuff about US mobile carriers scandals.
-- Fixed 2 bad package name.
-- Fixed some spelling mistakes.
-- Moved *com.trustonic.tuiservice* from Samsung list to Miscellaneous file.
-- Moved *org.codeaurora.gps.gpslogsave* from Xiaomi list to Miscellaneous list.
-- Deleted some leftover duplicates.
-- Android 4.4 (API level 19) is now supported. `--user 0` is removed when API is < 21 because it causes error (unknown option)
-- Commented out some packages after testing.
-
-
-# New Release (v1.9)
-
-## Added : 
-- Full documentation for **Nokia** and **Sony** packages.
-- **A lot** of country specific Nokia packages.
-
-## Misc
-- Added 1 new package to Sony list.
-- Moved *com.android.simappdialog* from Nokia list to AOSP list
-- Moved *com.quicinc.cne.CNEService* from Nokia list to Miscellaneous list (it's a Qualcomm package)
-
-
-# New Release (v1.8)
-
-## Added : 
-- Full documentation for *Asus* & *LG* packages.
-- **26** new samsung packages at the end of the *Samsung file*. **They are not deleted by default because I haven't documented them yet but it should be safe to debloat.**
-
-
-## Misc
-- Removed a duplicate Samsung package.
-- Minor improvements on documention for some packages (including evidences that Samsung Device Care sends data to China)
-- Moved *com.caf.fmradio* from *Samsung* file and *Asus* file (they were duplicates) to *Miscellaneous* file
-- Moved 5 packages from *Asus* file to *Miscellaneous* file.
-- Minor spelling corrections.
-
-
-# New Release (v1.7)
-
-## New : 
-- Full documentation for :
-	- Xiaomi packages
-	- Huawei packages
-
-## Misc
-- Fixed 2 package name (com.miui.analytics & com.huawei.hwid) that was miswritten. 
-- **Removed a lot of Xiaomi duplicates** (I think I forgot checking for duplicate after adding a list of new packages...).
-- Regrouped some Xiaomi packages together because you may not want to delete it (but you should if you ask me).
-- Moved *com.eterno* (Daily hunts News) from Xiaomi list to Miscellaneous list.
-- Moved *com.opera.preinstall* (Opera Max Data Saving) from Xiaomi list to Miscellaneous list.
-- Moved *com.phonepe.app* (PhonePe) from Xiaomi list to Miscellaneous list.
-- Removed *com.samsung.aasaservice* from Xiaomi list (dafuk ? O_O).
-- Reordered the Xiaomi list (alpabetic order + advanced debloat).
-- **Removed an extra space at the end of all package name strings in Huawei file causing the script to not find any Huawei packages** (whoops :/)
-
-
-# New Release (v1.6)
-
-## New : 
-- Complete documentation for :
-	- Carriers packages
-	- Miscellaneous packages
-	- Google packages
-
-- Added somes new packages 
-
-## Misc
-- Fix 3 wrong packages names
-- Moved Verizon Motorola-exclusive bloat from *Motorola* file to *Carriers* file
-- Some cleaning (some packages were still not in the right file)
-- Updated pre-selection for Miscellenaous packages
-
-
-# Happy new year (v1.5)
-
-## New : 
-- A bunch of new packages for Samsung devices added
-- Verizon carrier bloatwares added
-- **Full documentation for listed packages** (It takes a lot of time !) : 
-	- Google 
-	- Samsung
-	- AOSP
-- Merge carrier bloat into a single category (7 - Carrier) in the main menu. US carriers and EU carriers are traited separatly.
-- When searching for packages, *grep* is now used with *-i* argument to be case insensitive.
-- Generic android packages regrouped in the appropriate list (they were spread out among the others lists). List renamed in AOSP.
-- Better categorization of packages. Somes were not in the good file.
-- **Each manufacturer has now its own file**. This idea is to document all the packages so you can choose what you want to debloat. There will still be a preselection.
-
-
-### Misc 
-- Fixed some glitches with bold and colors
-- UI/UX improved
-- Full english translation (Finally !)
-- Code improvement and cleaning
-
-
-# This is an important one (v1.4)
-
-### Added : 
-- Even more packages to debloat for Xiaomi, Nokia & Sony devices
-
-### Changed:
-- Package **com.google.android.packageinstaller** removed because it causes bootloop on Xiaomi Note 5. I don't know why I added this one on the list. It's a essential core package.
-
-# Reminder is important (v1.2.1)
-
-### Added : 
-- **Reminder for the user** 
-	- To read the FAQ before using the script
-	- To reboot the phone after debloat
-	- The backup is not what you could think (refer to the FAQ)
-
-# More supported devices (v1.2)
-	
-### Added : 	
-- **Asus debloat list**	
-- **LG debloat list**	
-- **Nokia debloat list**
-	
-
-# What a naughty bug (v1.1)
-
-### Added : 
-- **Sony debloat list**
-### Changed :
-- **Some changes in other debloat lists**
-
-### Bugfixes : 
-- **Package display when debloating**
-
-
-# Here we go (v1.0)
-
-### New features : 
-- **Restore a backup**
-- **Brand auto-detect**
-	- new option "Auto debloat" added which use the debloat list adapted to your phone.
-
-### Changed : 
-- **UI/UX adjustments**
-- **Some improvement in the code**
-
-
-# Beta Version (v0.9)
-
-### New features :
-- **Backup before debloating**
-	- Backup all .apk apps (system ones included)
-	- Only those stored in internal memory
-	- Backup is stored in current directory under "phone-DDMMYY-HHMMSS.adb"
-	- Adding 
-
-### Changed :
-- **Minor UI changes**
-
-
-# Beta Version (v0.8)
-
-### New features :
-- **New debloat list** :
-	- Miscellaneous
-
-### Changed :
-- **Most of android bloat (independant from brand device) is now moved into its own list (Android bloat) in order to avoid duplicate in the others lists**
-- **UI/UX improvement :**
-	- Colors added
-	- New banner
-- **Moved the debloat lists into a another file (debloat_lists.sh)**
-- **Removing 2 packages from the "Android debloat list" causing issue when importing contacts from a file**
-- **Minor performances improvement**
-
-
-# Beta Version (v0.7)
-
-### New features :
-- **New drand's specific debloat list** : 
-	- Huawei
-- **New debloat list** :
-	- T-Mobile related
-	- Microsoft related
-	- Google related 
-	- "Android in general" related
-
-### Changed :
-- **Most of android bloat (independant from brand device) is now moved into its own list (Android bloat) in order to avoid duplicate in the others lists
-- **UI/UX improvement :**
-	- Adding Colors
-	- New banner
-
-
-# Beta Version (v0.6)
-
-### New features added :
-- **New Brand's specific debloat list** : 
-	- Xiaomi (not complete)
-- **New debloat list** :
-	- Facebook related
-
-### Changed : 
-- **Improving Samsung debloat list
-- **UI/UX improvements**
-
-
-# Initial Beta Version (v0.5)
-
-### Features :
-- **Debloat list for Samsung (Galaxy S)**
-- **Quick search among all the packages of the phone**
-- **Debloat specific package**
-- **Restore specific package**
+### Fixed
+- Spelling mistake
+- Failed build with MSVC toolchain
